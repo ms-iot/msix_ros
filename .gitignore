@@ -1,0 +1,7 @@
+output/
+working/
+log/
+Launcher/x64/
+*.vcxproj.user
+*.cer
+*.pfx

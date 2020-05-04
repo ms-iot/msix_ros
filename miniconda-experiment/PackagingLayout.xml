@@ -1,0 +1,16 @@
+<PackagingLayout xmlns="http://schemas.microsoft.com/appx/makeappx/2017">
+  <PackageFamily ID="ros-melodic-desktop" FlatBundle="true" ManifestPath="miniconda-experiment\appxmanifest.xml" ResourceManager="false">
+    
+    <!-- x64 code package-->
+    <Package ID="x64" ProcessorArchitecture="x64">
+      <Files>
+        <File DestinationPath="_resources\**" SourcePath="_resources\**"/>
+        <File DestinationPath="VFS\Common AppData\ros-forge\**" SourcePath="C:\ProgramData\ros-forge\**"/>
+        <File ExcludePath="C:\ProgramData\ros-forge\Uninstall-Miniconda3.exe"/>
+        <File DestinationPath="Launcher.bat" SourcePath="Launcher.bat"/>
+        <File DestinationPath="Launcher.exe" SourcePath="Launcher\x64\Release\Launcher.exe"/>
+      </Files>
+    </Package>
+
+  </PackageFamily>
+</PackagingLayout>

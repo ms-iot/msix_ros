@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package
+    xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+    xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+    xmlns:uap2="http://schemas.microsoft.com/appx/manifest/uap/windows10/2"
+    xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+    xmlns:uap4="http://schemas.microsoft.com/appx/manifest/uap/windows10/4"
+    xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
+    xmlns:uap6="http://schemas.microsoft.com/appx/manifest/uap/windows10/6"
+    xmlns:uap7="http://schemas.microsoft.com/appx/manifest/uap/windows10/7"
+    xmlns:uap8="http://schemas.microsoft.com/appx/manifest/uap/windows10/8"
+    xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
+    xmlns:mobile="http://schemas.microsoft.com/appx/manifest/mobile/windows10"
+    xmlns:iot="http://schemas.microsoft.com/appx/manifest/iot/windows10"
+    xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
+    xmlns:desktop2="http://schemas.microsoft.com/appx/manifest/desktop/windows10/2"
+    xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4"
+    xmlns:desktop6="http://schemas.microsoft.com/appx/manifest/desktop/windows10/6"
+    xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+    xmlns:rescap3="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities/3"
+    xmlns:rescap4="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities/4"
+    xmlns:rescap6="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities/6"
+    xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
+    xmlns:com2="http://schemas.microsoft.com/appx/manifest/com/windows10/2"
+    xmlns:com3="http://schemas.microsoft.com/appx/manifest/com/windows10/3"
+    IgnorableNamespaces="uap uap2 uap3 uap4 uap5 uap6 uap7 uap8 uap10 mobile iot desktop desktop2 desktop4 desktop6 rescap rescap3 rescap4 rescap6 com com2 com3">
+  <!--Package created by MSIX Packaging Tool version: 1.2019.1220.0-->
+  <Identity Name="ros-melodic-desktop" Publisher="CN=Contoso Software, O=Contoso Corporation, C=US" Version="1.0.20.0" ProcessorArchitecture="x64" />
+  <Properties>
+    <DisplayName>ros-melodic-desktop</DisplayName>
+    <PublisherDisplayName>Contoso Software</PublisherDisplayName>
+    <Description>ros-melodic-desktop</Description>
+    <Logo>_resources\StoreLogo.png</Logo>
+  </Properties>
+  <Resources>
+    <Resource Language="en-US" />
+  </Resources>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.18335.0" />
+  </Dependencies>
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+  <Applications>
+    <Application Id="DEMO1" Executable="Launcher.exe" EntryPoint="Windows.FullTrustApplication" desktop4:SupportsMultipleInstances="true">
+      <uap:VisualElements BackgroundColor="transparent" DisplayName="urdf_sim_tutorial" Square150x150Logo="_resources\StoreLogo.png" Square44x44Logo="_resources\StoreLogo.png" Description="urdf_sim_tutorial">
+        <uap:DefaultTile Wide310x150Logo="_resources\StoreLogo.png" Square310x310Logo="_resources\StoreLogo.png" Square71x71Logo="_resources\StoreLogo.png" />
+      </uap:VisualElements>
+      <Extensions>
+        <uap5:Extension Category="windows.appExecutionAlias">
+          <uap5:AppExecutionAlias desktop4:Subsystem="console">
+            <uap5:ExecutionAlias Alias="urdf_sim_tutorial.exe" />
+          </uap5:AppExecutionAlias>
+        </uap5:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+  <Extensions>
+    <uap6:Extension Category="windows.loaderSearchPathOverride">
+      <uap6:LoaderSearchPathOverride>
+        <uap6:LoaderSearchPathEntry FolderPath="VFS\Common AppData\ros-forge\envs\dev\Library\bin" />
+        <uap6:LoaderSearchPathEntry FolderPath="VFS\Common AppData\ros-forge\envs\dev\Library\opt\rviz_ogre_vendor\bin" />
+      </uap6:LoaderSearchPathOverride>
+    </uap6:Extension>
+    <desktop2:Extension Category="windows.firewallRules">
+      <desktop2:FirewallRules Executable="VFS\Common AppData\ros-forge\envs\dev\library\lib\demo_nodes_cpp\listener.exe">
+        <desktop2:Rule Direction="in" IPProtocol="TCP" Profile="private" />
+        <desktop2:Rule Direction="in" IPProtocol="UDP" Profile="private" />
+      </desktop2:FirewallRules>
+    </desktop2:Extension>
+    <desktop2:Extension Category="windows.firewallRules">
+      <desktop2:FirewallRules Executable="VFS\Common AppData\ros-forge\envs\dev\library\lib\demo_nodes_cpp\talker.exe">
+        <desktop2:Rule Direction="in" IPProtocol="TCP" Profile="private" />
+        <desktop2:Rule Direction="in" IPProtocol="UDP" Profile="private" />
+      </desktop2:FirewallRules>
+    </desktop2:Extension>
+    <desktop2:Extension Category="windows.firewallRules">
+      <desktop2:FirewallRules Executable="VFS\Common AppData\ros-forge\envs\dev\python.exe">
+        <desktop2:Rule Direction="in" IPProtocol="TCP" Profile="private" />
+        <desktop2:Rule Direction="in" IPProtocol="UDP" Profile="private" />
+      </desktop2:FirewallRules>
+    </desktop2:Extension>
+  </Extensions>
+</Package>
