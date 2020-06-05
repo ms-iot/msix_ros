@@ -60,9 +60,8 @@
       <uap6:LoaderSearchPathOverride>
         <uap6:LoaderSearchPathEntry FolderPath="VFS\Common AppData\python27amd64" />
         <uap6:LoaderSearchPathEntry FolderPath="VFS\Common AppData\ros\melodic\x64\bin" />
-        <uap6:LoaderSearchPathEntry FolderPath="VFS\Common AppData\ros\melodic\x64\lib" />
         <uap6:LoaderSearchPathEntry FolderPath="VFS\Common AppData\rosdeps\x64\bin" />
-        <uap6:LoaderSearchPathEntry FolderPath="VFS\Common AppData\rosdeps\x64\lib" />
+        <uap6:LoaderSearchPathEntry FolderPath="VFS\Common AppData\rosdeps\x64\lib\gazebo-9\plugins" />
       </uap6:LoaderSearchPathOverride>
     </uap6:Extension>
     <desktop2:Extension Category="windows.firewallRules">
