@@ -43,12 +43,13 @@ Write-Host "`nRemoving working folder ... done`n"
 Write-Host "`nCopying ROS install ... `n"
 
 # exclude development time required files
+# * some packages have runtime dependency on pkg-config
+#   so we don't remove them for now.
 $developmentFiles = @(
     '*.lib',
     '*.pdb',
     '*.dll.a',
-    '*.cmake',
-    '*.pc'
+    '*.cmake'
 )
 
 $runtimeFolders = @(
@@ -83,6 +84,27 @@ foreach ($runtimeFolder in $runtimeFolders) {
 Copy-Item -Path (Join-Path $inputRosDir 'ros\melodic\x64\*.*') -Destination (Join-Path $outputRosDir 'ros\melodic\x64') -Container
 
 Write-Host "`nCopying ROS install ... done`n"
+
+Write-Host "`nFixing up shared library location ...`n"
+
+$fixupFolders = @(
+    'rosdeps\x64',
+    'ros\melodic\x64'
+)
+
+foreach ($fixupFolder in $fixupFolders) {
+    $outputDir = (Join-Path $outputRosDir $fixupFolder)
+    $sharedLibs = (Join-Path $outputDir "lib\*.dll")
+    $binDir = (Join-Path $outputDir "bin")
+    $arguments = @{
+        Path = $sharedLibs
+        Destination = $binDir
+        Force = $True
+    }
+    Move-Item @arguments
+}
+
+Write-Host "`nFixing up shared library location ...`n"
 
 Write-Host "`nGenerating the baseline firewall rules ... `n"
 
