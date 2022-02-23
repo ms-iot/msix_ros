@@ -1,5 +1,5 @@
 <PackagingLayout xmlns="http://schemas.microsoft.com/appx/makeappx/2017">
-  <PackageFamily ID="ros-melodic-desktop" FlatBundle="true" ManifestPath="example\appxmanifest.xml" ResourceManager="false">
+  <PackageFamily ID="ros-distribution-desktop" FlatBundle="true" ManifestPath="example\appxmanifest.xml" ResourceManager="false">
     
     <!-- x64 code package-->
     <Package ID="x64" ProcessorArchitecture="x64">
