@@ -25,25 +25,25 @@
     xmlns:com3="http://schemas.microsoft.com/appx/manifest/com/windows10/3"
     IgnorableNamespaces="uap uap2 uap3 uap4 uap5 uap6 uap7 uap8 uap10 mobile iot desktop desktop2 desktop4 desktop6 rescap rescap3 rescap4 rescap6 com com2 com3">
   <!--Package created by MSIX Packaging Tool version: 1.2019.1220.0-->
-  <Identity Name="ros-melodic-desktop" Publisher="CN=Contoso Software, O=Contoso Corporation, C=US" Version="1.0.20.0" ProcessorArchitecture="x64" />
+  <Identity Name="ros-distribution-desktop" Publisher="CN=Contoso Software, O=Contoso Corporation, C=US" Version="1.0.20.0" ProcessorArchitecture="x64" />
   <Properties>
-    <DisplayName>ros-melodic-desktop</DisplayName>
+    <DisplayName>ros-distribution-desktop</DisplayName>
     <PublisherDisplayName>Contoso Software</PublisherDisplayName>
-    <Description>ros-melodic-desktop</Description>
+    <Description>ros-distribution-desktop</Description>
     <Logo>_resources\StoreLogo.png</Logo>
   </Properties>
   <Resources>
     <Resource Language="en-US" />
   </Resources>
   <Dependencies>
-    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.18335.0" />
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.18362.0" />
   </Dependencies>
   <Capabilities>
     <rescap:Capability Name="runFullTrust" />
   </Capabilities>
   <Applications>
     <Application Id="APP" Executable="Launcher.exe" EntryPoint="Windows.FullTrustApplication" desktop4:SupportsMultipleInstances="true">
-      <uap:VisualElements BackgroundColor="transparent" DisplayName="ROS_DEMO" Square150x150Logo="_resources\StoreLogo.png" Square44x44Logo="_resources\StoreLogo.png" Description="ROS_DEMO">
+      <uap:VisualElements BackgroundColor="transparent" DisplayName="ROS_Demo" Square150x150Logo="_resources\StoreLogo.png" Square44x44Logo="_resources\StoreLogo.png" Description="ROS_DEMO">
         <uap:DefaultTile Wide310x150Logo="_resources\StoreLogo.png" Square310x310Logo="_resources\StoreLogo.png" Square71x71Logo="_resources\StoreLogo.png" />
       </uap:VisualElements>
       <Extensions>
@@ -58,14 +58,13 @@
   <Extensions>
     <uap6:Extension Category="windows.loaderSearchPathOverride">
       <uap6:LoaderSearchPathOverride>
-        <uap6:LoaderSearchPathEntry FolderPath="VFS\Common AppData\python27amd64" />
-        <uap6:LoaderSearchPathEntry FolderPath="VFS\Common AppData\ros\melodic\x64\bin" />
-        <uap6:LoaderSearchPathEntry FolderPath="VFS\Common AppData\rosdeps\x64\bin" />
-        <uap6:LoaderSearchPathEntry FolderPath="VFS\Common AppData\rosdeps\x64\lib\gazebo-9\plugins" />
+        <uap6:LoaderSearchPathEntry FolderPath="VFS\Common AppData\ros\distribution\x64" />
+        <uap6:LoaderSearchPathEntry FolderPath="VFS\Common AppData\ros\distribution\x64\bin" />
+        <uap6:LoaderSearchPathEntry FolderPath="VFS\Common AppData\ros\distribution\x64\Lib" />
       </uap6:LoaderSearchPathOverride>
     </uap6:Extension>
     <desktop2:Extension Category="windows.firewallRules">
-      <desktop2:FirewallRules Executable="VFS\Common AppData\python27amd64\python.exe">
+      <desktop2:FirewallRules Executable="VFS\Common AppData\ros\distribution\x64\python.exe">
         <desktop2:Rule Direction="in" IPProtocol="TCP" Profile="private" />
         <desktop2:Rule Direction="in" IPProtocol="UDP" Profile="private" />
       </desktop2:FirewallRules>

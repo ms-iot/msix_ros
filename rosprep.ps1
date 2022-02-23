@@ -45,6 +45,10 @@ Write-Host "`nCopying ROS install ... `n"
 # exclude development time required files
 # * some packages have runtime dependency on pkg-config
 #   so we don't remove them for now.
+$distro = 'distribution'
+
+
+
 $developmentFiles = @(
     '*.lib',
     '*.pdb',
@@ -52,20 +56,74 @@ $developmentFiles = @(
     '*.cmake'
 )
 
-$runtimeFolders = @(
-    'install',
-    'python27amd64',
-    'rosdeps\x64\bin',
-    'rosdeps\x64\lib',
-    'rosdeps\x64\share',
-    'rosdeps\x64\etc',
-    'rosdeps\x64\media',
-    'rosdeps\x64\plugins',
-    'ros\melodic\x64\bin',
-    'ros\melodic\x64\lib',
-    'ros\melodic\x64\share',
-    'ros\melodic\x64\etc'
+
+[System.Collections.ArrayList]$runtimeFolders = @(
+    "install"
+    "ros\$distro\x64\Scripts"
+    "ros\$distro\x64\plugins",
+    "ros\$distro\x64\bin",
+    "ros\$distro\x64\share"
+    "ros\$distro\x64\etc"
 )
+
+if ($distro -eq 'melodic') {
+
+
+
+    $dllFolder = "ros\$distro\x64\DLLs"
+
+    $inputDir = (Join-Path $inputRosDir $dllFolder)
+    $outputDir = (Join-Path $outputRosDir "ros\$distro\x64\")
+    $dllArgs = @{
+        Path = $inputDir
+        Recurse = $True
+        Destination = $outputDir
+        Container = $True
+        Exclude = $developmentFiles
+        
+    }
+    Copy-Item @dllArgs 
+    Write-Host "`n done DLLs`n"
+    
+
+    $libFolder = "ros\$distro\x64\lib"
+    $inputDir = (Join-Path $inputRosDir $libFolder)
+    $outputDir = (Join-Path $outputRosDir "ros\$distro\x64\Lib")
+    $libArgs = @{
+        Path = $inputDir
+        Recurse = $True
+        Destination = $outputDir
+        Container = $True
+        Exclude = $developmentFiles
+    }
+    Copy-Item @libArgs
+
+    Write-Host "`n done Lib`n"
+    
+    $mediaFolder = "ros\$distro\x64\media"
+    $inputDir = (Join-Path $inputRosDir $mediaFolder)
+    $outputDir = (Join-Path $outputRosDir "ros\$distro\x64\Media")
+    $mediaArgs = @{
+        Path = $inputDir
+        Recurse = $True
+        Destination = $outputDir
+        Container = $True
+        Exclude = $developmentFiles
+    }
+    Copy-Item @mediaArgs
+
+    Write-Host "`n done Media`n"
+}
+elseif ($distro -eq 'noetic') {
+    $runtimeFolders += "ros\$distro\x64\Media"
+    $runtimeFolders += "ros\$distro\x64\Lib"    
+}
+else {
+    $runtimeFolders.Remove("ros\$distro\x64\etc")
+    $runtimeFolders += "ros\$distro\x64\Media"
+    $runtimeFolders += "ros\$distro\x64\Lib"    
+}
+
 
 foreach ($runtimeFolder in $runtimeFolders) {
     $inputDir = (Join-Path $inputRosDir $runtimeFolder)
@@ -80,40 +138,35 @@ foreach ($runtimeFolder in $runtimeFolders) {
     Copy-Item @arguments
 }
 
+
 # Copying the files under the root folder.
-Copy-Item -Path (Join-Path $inputRosDir 'ros\melodic\x64\*.*') -Destination (Join-Path $outputRosDir 'ros\melodic\x64') -Container
+Copy-Item -Path (Join-Path $inputRosDir "ros\$distro\x64\*.*") -Destination (Join-Path $outputRosDir "ros\$distro\x64") -Container
 
 Write-Host "`nCopying ROS install ... done`n"
 
-Write-Host "`nFixing up shared library location ...`n"
+Write-Host "`nFixing up shared file location ...`n"
 
-$fixupFolders = @(
-    'rosdeps\x64',
-    'ros\melodic\x64'
-)
+$fixupFolder = "ros\$distro\x64"
 
-foreach ($fixupFolder in $fixupFolders) {
-    $outputDir = (Join-Path $outputRosDir $fixupFolder)
-    $sharedLibs = (Join-Path $outputDir "lib\*.dll")
-    $binDir = (Join-Path $outputDir "bin")
-    $arguments = @{
-        Path = $sharedLibs
-        Destination = $binDir
-        Force = $True
-    }
-    Move-Item @arguments
+
+$outputDir = (Join-Path $outputRosDir $fixupFolder)
+$sharedLibs = (Join-Path $outputDir "*.dll")
+$binDir = (Join-Path $outputDir "bin")
+$fixupArgs = @{
+    Path = $sharedLibs
+    Destination = $binDir
+    Force = $True
 }
+Move-Item @fixupArgs
 
-Write-Host "`nFixing up shared library location ...`n"
 
-Write-Host "`nGenerating the baseline firewall rules ... `n"
-
+# $runtimeFolders += $fixupFolder
 $searchPattern = @()
 foreach ($runtimeFolder in $runtimeFolders) {
     $searchDir = (Join-Path $outputRosDir $runtimeFolder)
     if (-Not (Test-Path -Path $searchDir -PathType Container)) {
         continue
-    }
+    }   
     $executables = (Join-Path $searchDir "*.exe")
     $searchPattern += $executables
 }
@@ -125,10 +178,16 @@ $roscppPattern = @(
 $roscppNodes = @()
 Get-ChildItem $searchPattern -Recurse | % {
     $output = & $dumpbin /dependents $_.FullName | Select-String -Pattern $roscppPattern
+    
+
     if ($output) {
         $roscppNodes += $_.FullName.Replace($outputRosDir, 'VFS\Common AppData')
+        # Write-Host "`n$roscppNodes`n"
     }
 }
+
+
+Write-Host "`nGenerating the baseline firewall rules ... `n"
 
 [xml]$doc = New-Object System.Xml.XmlDocument
 
@@ -182,7 +241,7 @@ Write-Host "`nFixing up hard-coded PREFIX ... `n"
 ruplacer "C:/opt" "C:/ProgramData" "$outputRosDir" --no-regex --color never --go | Out-File -FilePath (Join-Path $scriptsDir "log\ruplacer1.log")
 ruplacer "c:\opt" "c:\ProgramData" "$outputRosDir" --no-regex --color never --go | Out-File -FilePath (Join-Path $scriptsDir "log\ruplacer2.log")
 ruplacer "C:\opt" "C:\ProgramData" "$outputRosDir" --no-regex --color never --go | Out-File -FilePath (Join-Path $scriptsDir "log\ruplacer3.log")
+if ($distro -ne 'foxy') {
 ruplacer "C:\\opt" "C:\\ProgramData" "$outputRosDir" --no-regex --color never --go | Out-File -FilePath (Join-Path $scriptsDir "log\ruplacer4.log")
-ruplacer "_parent_package_path.py" "%LOCALAPPDATA%\_parent_package_path.py" "$outputRosDir" --no-regex --color never --go | Out-File -FilePath (Join-Path $scriptsDir "log\ruplacer5.log")
-
+}
 Write-Host "`nFixing up hard-coded PREFIX ... done`n"

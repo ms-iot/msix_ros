@@ -25,6 +25,7 @@ You can skip this step if you did it already.
 
 Now you will need to install your ROS workspace into `c:\opt\install` and make it live side-by-side with the ROS installation.
 
+### Melodic/Noetic
 You can do it by specifying the install space when running `catkin_make_isolated`:
 
 ```Batchfile
@@ -32,20 +33,36 @@ You can do it by specifying the install space when running `catkin_make_isolated
 
 catkin_make_isolated --install --merge --install-space c:\opt\install
 ```
+### Foxy
+You can do it by specifying the install space when running `colcon build`:
 
+```Batchfile
+:: colcon build example
+
+colcon build --install-base c:\opt\install
+```
 ## Task 3: Prepare ROS Runtime Contents
 
 Check the folder layout of `c:\opt` and it should be like as below:
 
 ```
 -- opt
-   |-- python27amd64
-   |-- ros\melodic\x64
-   |-- rosdeps\x64
+   |-- ros\distro\x64
    |-- install
 ```
 
 Now open the PowerShell terminal and change the working directory to this project.
+
+Search and replace the string `distribution` with the relevant ROS distro you want to use in the below files
+
+```
+    example/AppxManifest.xml
+    example/Launcher.bat
+    example/PackagingLayout.xml
+    rosprep.ps1
+```
+Uncomment the relevant launch command line file for ROS1/ROS2 in the `example/Launcher.bat` file to run the talker_listener example. 
+
 Run `rosprep.ps1` to prepare the ROS runtime contents, and it will stage the results under `working` folder.
 
 > `rosprep.ps1` copies the contents only required at runtime and fixes up hard-coded prefix in ROS files to accommodate MSIX virtualized file system requirement.
@@ -76,7 +93,7 @@ The `-packagingLayout <path to PackagingLayout.xml>` can specify your customized
 ## Task 6: Install MSIX Packages
 
 Now you can find the MSIX packages under `output` folder.
-Double click `ros-melodic-desktop.msixbundle` to install.
+Double click `ros-distro-desktop.msixbundle` to install.
 
 Or you can install MSIX to device context by [Add-AppProvisionedPackage][Add-AppProvisionedPackage].
 
