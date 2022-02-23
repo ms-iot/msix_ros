@@ -160,7 +160,6 @@ $fixupArgs = @{
 Move-Item @fixupArgs
 
 
-# $runtimeFolders += $fixupFolder
 $searchPattern = @()
 foreach ($runtimeFolder in $runtimeFolders) {
     $searchDir = (Join-Path $outputRosDir $runtimeFolder)
@@ -182,7 +181,6 @@ Get-ChildItem $searchPattern -Recurse | % {
 
     if ($output) {
         $roscppNodes += $_.FullName.Replace($outputRosDir, 'VFS\Common AppData')
-        # Write-Host "`n$roscppNodes`n"
     }
 }
 
